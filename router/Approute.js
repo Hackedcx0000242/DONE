@@ -21,4 +21,5 @@ approute.post("/login-account", UserController.userLogin);
 approute.post("/filter", RestaurantController.filter);
 approute.post("/create-orderId/",payment.createOrderId)
 approute.post("/verify-payment",payment.varifyPayment)
+approute.post("/orderData",order.orderData)
 module.exports = approute;
