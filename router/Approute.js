@@ -2,6 +2,7 @@ const app = require("express");
 const loctioncontroller = require("../controller/loctioncontroller");
 const RestaurantController = require("../controller/RestaurantC");
 const UserController = require("../controller/UserC");
+const order =require("../controller/Order")
 const payment =require("../controller/PaymentController")
 const approute = app.Router();
 approute.get("/", loctioncontroller.getHome);
