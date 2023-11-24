@@ -12,12 +12,7 @@ const loctionschema = new schema({
   min_price: { type: Number },
   contact_number: { type: String },
   cuisine_id: { type: Array },
-  cuisine: [
-    {
-
-        "name": {type:String}
-    }
-],
+  cuisine: { type: Array },
   image: { type: String },
   mealtype_id: { type: Number },
 });

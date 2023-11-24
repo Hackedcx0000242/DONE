@@ -1,6 +1,6 @@
-const Restromodel = require("../model/Restruo");
 const MealTypeModel = require("../model/mealtype");
 const RestaurantModel = require("../model/mealitem");
+const restro =require("../model/Restruo")
 
 module.exports.getRestro = async (req, res) => {
   let { loc_id } = req.params;
@@ -44,55 +44,16 @@ module.exports.getMenuItemsByRestaurantId = async (request, response) => {
   });
 };
 
+
 module.exports.filter = async (request, response) => {
-  let {mealtype,cuisine,location,lcost,hcost ,page, sort } = request.body;
-  let filters = {};
+  let { location, meal_type, sort, cuisine_id } = request.body;
+  let filter = {};
+  sort = sort === undefined ? 1 : sort;
 
-if(mealtype)
-{
-  filters['mealtype_id']=mealtype;
-}
-
-  // if(mealtype && cuisine)
-  // {
-  //     filters['mealtype_id']=mealtype;
-
-  // }
-  // if(mealtype && lcost && hcost)
-  // {
-  //     filters['mealtype_id']=mealtype;
-  //     filters['min_price'] ={$lte :hcost , $gte :lcost}
-
-  // }
-  // if(mealtype && cuisine && lcost && hcost )
-  // {
-  //     filters['mealtype_id']=mealtype;
-  //     filters['cuisine.id']={$in : cuisine};
-  //     filters['min_price'] ={$lte :hcost , $gte :lcost}
-
-  // }
-  // if(mealtype && location )
-  // {
-  //     filters['mealtype_id']=mealtype;
-  //     filters['locality']=location;
-
-  // }
-  // if(mealtype && location && lcost && hcost )
-  // {
-  //     filters['mealtype_id']=mealtype;
-  //     filters['locality']=loction;
-  //     filters['min_price'] ={$lte :hcost , $gte :lcost}
-
-  // }
-  // if(mealtype &&  location && lcost && hcost && cuisine)
-  // {
-  //     filters['mealtype_id']=mealtype;
-  //     filters['locality']=location;
-  //     filters['min_price'] ={$lte :hcost , $gte :lcost}
-  //     filters['cuisine.id']={$in : cuisine}
-  // }
-
-  let result = await Restromodel.find(filters, {
+  if (location !== undefined) filter["location_id"] = location;
+  if (meal_type !== undefined) filter["mealtype_id"] = meal_type;
+  if (cuisine_id !== undefined) filter["cuisine_id"] = { $in: cuisine_id };
+  let result = await restro.find(filter, {
     name: 1,
     city: 1,
     locality: 1,
@@ -100,6 +61,8 @@ if(mealtype)
     mealtype_id: 1,
     cuisine: 1,
     min_price: 1,
+  }).sort({
+    min_price: sort,
   });
   response.send({
     status: true,
