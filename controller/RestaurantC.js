@@ -4,7 +4,7 @@ const restro =require("../model/Restruo")
 
 module.exports.getRestro = async (req, res) => {
   let { loc_id } = req.params;
-  let result = await Restromodel.find(
+  let result = await restro.find(
     { location_id: loc_id },
     {
       name: 1,
@@ -21,7 +21,7 @@ module.exports.getRestro = async (req, res) => {
 };
 module.exports.getRestaurantById = async (request, response) => {
   let { id } = request.params;
-  let result = await Restromodel.findById(id);
+  let result = await restro.findById(id);
   response.send({
     status: true,
     result,
