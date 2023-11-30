@@ -46,13 +46,21 @@ module.exports.getMenuItemsByRestaurantId = async (request, response) => {
 
 
 module.exports.filter = async (request, response) => {
-  let { location, meal_type, sort, cuisine_id } = request.body;
+  let { location, meal_type, sort, cuisine_id ,page} = request.body;
   let filter = {};
+  let limit=2;
+  const start=(page-1)*limit;
+  const end=(page)*limit;
+
   sort = sort === undefined ? 1 : sort;
+  page= page === undefined ? 1 : page;
+
 
   if (location !== undefined) filter["location_id"] = location;
   if (meal_type !== undefined) filter["mealtype_id"] = meal_type;
   if (cuisine_id !== undefined) filter["cuisine_id"] = { $in: cuisine_id };
+  
+
   let result = await restro.find(filter, {
     name: 1,
     city: 1,
@@ -63,7 +71,7 @@ module.exports.filter = async (request, response) => {
     min_price: 1,
   }).sort({
     min_price: sort,
-  });
+  }).limit(limit).skip(start);
   response.send({
     status: true,
     result,
